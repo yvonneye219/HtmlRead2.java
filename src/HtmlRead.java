@@ -22,7 +22,18 @@ public class HtmlRead {
 
             String line;
             while ((line = reader.readLine()) != null) {
-                findLinks(line);
+
+                if(line.contains("href")) {
+                    int index = 0;
+                    int start = 0;
+                    int end = 0;
+                        start = line.indexOf("href=") + 6;
+                        System.out.println(line);
+                        String line2 = line.substring(start);
+                        System.out.println(line2);
+                        end = line2.indexOf("\"");
+                        System.out.println(line2.substring(0, end));
+                }
             }
             reader.close();
 
@@ -30,17 +41,6 @@ public class HtmlRead {
             System.out.println(ex);
         }
     }
-    public void findLinks(String text) {
-        int index = 0;
-        while (true) {
-            index = text.indexOf("href=\"", index);
-            if (index == -1) break;
-            int start = index + 6;
-            int end = text.indexOf("\"", start);
-            if (end == -1) break;
-            String link = text.substring(start, end);
-            System.out.println(link);
-            index = end + 1;
-        }
-    }
+
+
 }
