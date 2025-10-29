@@ -1,38 +1,46 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
 public class HtmlRead {
 
     public static void main(String[] args) {
-        HtmlRead html = new HtmlRead();
+        new HtmlRead();
     }
 
     public HtmlRead() {
-
         try {
-            System.out.println();
-            System.out.print("hello \n");
+            System.out.println("hello");
             URL url = new URL("https://www.milton.edu/");
-
-            URLConnection urlc = url.openConnection();
-            urlc.setRequestProperty("User-Agent", "Mozilla 5.0 (Windows; U; " + "Windows NT 5.1; en-US; rv:1.8.0.11) ");
+            URLConnection conn = url.openConnection();
+            conn.setRequestProperty("User-Agent", "Mozilla/5.0");
 
             BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(urlc.getInputStream())
+                    new InputStreamReader(conn.getInputStream())
             );
+
             String line;
-            while ( (line = reader.readLine()) != null ) {
-                
-                System.out.println(line);
+            while ((line = reader.readLine()) != null) {
+                findLinks(line);
             }
             reader.close();
-        } catch(Exception ex) {
+
+        } catch (Exception ex) {
             System.out.println(ex);
         }
-
     }
-
+    public void findLinks(String text) {
+        int index = 0;
+        while (true) {
+            index = text.indexOf("href=\"", index);
+            if (index == -1) break;
+            int start = index + 6;
+            int end = text.indexOf("\"", start);
+            if (end == -1) break;
+            String link = text.substring(start, end);
+            System.out.println(link);
+            index = end + 1;
+        }
+    }
 }
